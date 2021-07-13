@@ -28,7 +28,8 @@ router.post("/", async (req, res, next) => {
         });
         return res.json({ message, sender });
       }
-      return console.log("cannot access this conversation");
+      console.log("cannot access this conversation");
+      return null;
     }
     // if we don't have conversation id, find a conversation to make sure it doesn't already exist
     let conversation = await Conversation.findConversation(
@@ -56,11 +57,10 @@ router.post("/", async (req, res, next) => {
         text,
         conversationId: conversation.id,
       });
-      res.json({ message, sender });
+      return res.json({ message, sender });
     }
-    else{
-      return console.log("cannot access this conversation");
-    }
+    console.log("cannot access this conversation");
+    return null;
   } catch (error) {
     next(error);
   }
