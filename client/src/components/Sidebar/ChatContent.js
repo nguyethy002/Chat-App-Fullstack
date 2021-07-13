@@ -32,13 +32,18 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     borderRadius: 10,
   },
+
 }));
 
 const ChatContent = (props) => {
   const classes = useStyles();
 
   const { conversation } = props;
-  const { latestMessageText, otherUser } = conversation;
+  const { latestMessageText, otherUser, messages } = conversation;
+  const numUnread = messages.reduce(
+    (curCount, curMessage) => (curMessage.isRead ? curCount : curCount + 1),
+    0
+  );
 
   return (
     <Box className={classes.root}>
@@ -49,6 +54,9 @@ const ChatContent = (props) => {
         <Typography className={classes.previewText}>
           {latestMessageText}
         </Typography>
+      </Box>
+      <Box className={classes.bubble}>
+        <Typography className={classes.notification}>{numUnread}</Typography>
       </Box>
     </Box>
   );

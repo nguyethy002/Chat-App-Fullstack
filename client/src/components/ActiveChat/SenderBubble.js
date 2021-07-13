@@ -25,30 +25,29 @@ const useStyles = makeStyles(() => ({
     background: "#F4F6FA",
     borderRadius: "10px 10px 0 10px",
   },
-  seenAvatar:{
+  seenAvatar: {
     width: "20px",
     height: "20px",
-  }
+  },
 }));
 
 const SenderBubble = (props) => {
   const classes = useStyles();
-  const { time, text, otherUser, lastMessage } = props;
-  let isReadImage;
-  if (lastMessage.isRead === true) {
-    isReadImage = otherUser.photoUrl;
-  }
+  const { time, text, otherUser, isLastMessage, isRead } = props;
+
   return (
     <Box className={classes.root}>
       <Typography className={classes.date}>{time}</Typography>
       <Box className={classes.bubble}>
         <Typography className={classes.text}>{text}</Typography>
       </Box>
-      <Avatar
-        alt={otherUser.username}
-        src={isReadImage}
-        className={classes.seenAvatar}
-      ></Avatar>
+      {isLastMessage && isRead && (
+        <Avatar
+          alt={otherUser.username}
+          src={otherUser.photoUrl}
+          className={classes.seenAvatar}
+        />
+      )}
     </Box>
   );
 };

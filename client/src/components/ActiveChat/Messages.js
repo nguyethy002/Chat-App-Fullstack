@@ -15,14 +15,31 @@ const Messages = (props) => {
       }
     }
   }, [messages]);
-  let lastMessage = messages[messages.length-1];
-  console.log("this is last message", messages[0]);
+
+  const sortedList = messages.sort(
+    (messageA, messageB) => messageB.id - messageA.id
+  );
+  let lastMessageId;
+  for (let i = sortedList.length - 1; i >= 0; i--) {
+    const message = sortedList[i];
+    if (message.senderId === userId) {
+      lastMessageId = message.id;
+    }
+  }
+
   return (
     <Box>
       {messages.map((message) => {
         const time = moment(message.createdAt).format("h:mm");
         return message.senderId === userId ? (
-          <SenderBubble key={message.id} text={message.text} time={time} otherUser={otherUser} lastMessage = {lastMessage} />
+          <SenderBubble
+            key={message.id}
+            text={message.text}
+            time={time}
+            otherUser={otherUser}
+            isLastMessage={message.id === lastMessageId}
+            isRead={message.isRead}
+          />
         ) : (
           <OtherUserBubble
             key={message.id}
@@ -44,4 +61,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(() => {}, mapDispatchToProps)(Messages);
+export default connect(() => ({}), mapDispatchToProps)(Messages);
