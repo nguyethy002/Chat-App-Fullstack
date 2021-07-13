@@ -38,6 +38,7 @@ router.post("/", async (req, res, next) => {
     );
 
     if (!conversation) {
+      // create conversation
       conversation = await Conversation.create({
         user1Id: senderId,
         user2Id: recipientId,
