@@ -14,6 +14,8 @@ router.post("/", async (req, res, next) => {
 
     // if we already know conversation id, we can save time and just add it to message and return
     if (conversationId) {
+      //find the conversation based on its Id and then check if the 
+      //conversation's users' Id have the same Id as sender and recipient
       const conversation = await Conversation.findByPk(conversationId);
       if (
         (senderId === conversation.user1Id &&
