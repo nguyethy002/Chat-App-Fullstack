@@ -28,6 +28,13 @@ const useStyles = makeStyles(() => ({
     color: "#FFFFFF",
     letterSpacing: -0.2,
     padding: 8
+  },
+  isReadText:{
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#000000",
+    letterSpacing: -0.2,
+    padding: 8
   }
 }));
 
