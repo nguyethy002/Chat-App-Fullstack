@@ -14,7 +14,7 @@ router.post("/", async (req, res, next) => {
 
     // if we already know conversation id, we can save time and just add it to message and return
     if (conversationId) {
-      const conversation = await Conversation.findByPK(conversationId);
+      const conversation = await Conversation.findByPk(conversationId);
       if (
         (senderId === conversation.user1Id &&
           recipientId === conversation.user2Id) ||
@@ -28,12 +28,12 @@ router.post("/", async (req, res, next) => {
         });
         return res.json({ message, sender });
       }
-      return null;
+      return console.log("cannot access this conversation");
     }
     // if we don't have conversation id, find a conversation to make sure it doesn't already exist
     let conversation = await Conversation.findConversation(
       senderId,
-      recipientIds
+      recipientId
     );
 
     if (!conversation) {
@@ -57,6 +57,9 @@ router.post("/", async (req, res, next) => {
         conversationId: conversation.id,
       });
       res.json({ message, sender });
+    }
+    else{
+      return console.log("cannot access this conversation");
     }
   } catch (error) {
     next(error);
