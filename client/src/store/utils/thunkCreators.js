@@ -111,7 +111,7 @@ export const postMessage = (body) => (dispatch) => {
 
 export const markMessageAsRead = (messageId) => async () => {
   try {
-    await axios.post("/api/messages/is-read", {messageId});
+    await axios.patch("/api/messages/is-read", {messageId});
   } catch (error) {
     console.error(error);
   }
