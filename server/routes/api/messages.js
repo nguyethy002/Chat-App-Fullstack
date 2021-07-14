@@ -14,7 +14,7 @@ router.post("/", async (req, res, next) => {
 
     // if we already know conversation id, we can save time and just add it to message and return
     if (conversationId) {
-      //find the conversation based on its Id and then check if the 
+      //find the conversation based on its Id and then check if the
       //conversation's users' Id have the same Id as sender and recipient
       const conversation = await Conversation.findByPk(conversationId);
       if (
@@ -30,8 +30,7 @@ router.post("/", async (req, res, next) => {
         });
         return res.json({ message, sender });
       }
-      console.log("cannot access this conversation");
-      return null;
+      return res.sendStatus(200);
     }
     // if we don't have conversation id, find a conversation to make sure it doesn't already exist
     let conversation = await Conversation.findConversation(
@@ -49,21 +48,14 @@ router.post("/", async (req, res, next) => {
         sender.online = true;
       }
     }
-    if (
-      (senderId === conversation.user1Id &&
-        recipientId === conversation.user2Id) ||
-      (recipientId === conversation.user1Id &&
-        senderId === conversation.user2Id)
-    ) {
-      const message = await Message.create({
-        senderId,
-        text,
-        conversationId: conversation.id,
-      });
-      return res.json({ message, sender });
-    }
-    console.log("cannot access this conversation");
-    return null;
+
+    const message = await Message.create({
+      senderId,
+      text,
+      conversationId: conversation.id,
+    });
+    return res.json({ message, sender });
+
   } catch (error) {
     next(error);
   }
