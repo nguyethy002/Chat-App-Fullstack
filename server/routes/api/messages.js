@@ -52,12 +52,17 @@ router.patch("/is-read", async (req, res, next) => {
     return res.sendStatus(401);
   }
   try {
-    if (!req.body.messageId) {
+    if (!req.body.messageIdArray) {
       return res.sendStatus(400);
     }
-    const messageId = req.body.messageId;
-    await Message.update({ isRead: true }, { where: { id: messageId } });
-    return res.send(204);
+    const messageIdArray = req.body.messageIdArray;
+    for (let i = 0; i < messageIdArray.length; i++) {
+      await Message.update(
+        { isRead: true },
+        { where: { id: messageIdArray[i] } }
+      );
+    }
+    return res.sendStatus(204);
   } catch (error) {
     next(error);
   }

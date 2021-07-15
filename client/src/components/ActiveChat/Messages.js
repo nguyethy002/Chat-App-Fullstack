@@ -6,14 +6,16 @@ import { markMessageAsRead } from "../../store/utils/thunkCreators";
 import moment from "moment";
 
 const Messages = (props) => {
-  const { messages, otherUser, userId } = props;
+  const { messages, otherUser, userId, markMessageAsRead } = props;
 
   useEffect(() => {
-    for (let i = 0; i < messages.length; i++) {
-      if (messages[i].isRead === false && messages[i].senderId !== userId) {
-        props.markMessageAsRead(messages[i].id);
+    const unreadMessagesArr = [];
+    messages.forEach((message) => {
+      if (!message.isRead && message.senderId !== userId) {
+        unreadMessagesArr.push(message.id);
       }
-    }
+    });
+    markMessageAsRead(unreadMessagesArr);
   }, [messages]);
 
   const sortedList = messages.sort(
