@@ -18,7 +18,9 @@ const useStyles = makeStyles(() => ({
   },
   chatWrapper: {
     overflow: "auto",
-    maxHeight: "500px"
+    maxHeight: "500px",
+    paddingLeft: "10px",
+    paddingRight: "10px",
   },
 }));
 
