@@ -1,10 +1,11 @@
 import axios from "axios";
 import socket from "../../socket";
 import {
-  gotConversations,
   addConversation,
+  gotConversations,
   setNewMessage,
   setSearchedUsers,
+  markMessageAsRead as markMessageAsReadAction,
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
 
@@ -93,9 +94,9 @@ const sendMessage = (data, body) => {
 
 // message format to send: {recipientId, text, conversationId}
 // conversationId will be set to null if its a brand new conversation
-export const postMessage = (body) => (dispatch) => {
+export const postMessage = (body) => async (dispatch) => {
   try {
-    const data = saveMessage(body);
+    const data = await saveMessage(body);
 
     if (!body.conversationId) {
       dispatch(addConversation(body.recipientId, data.message));
@@ -109,13 +110,20 @@ export const postMessage = (body) => (dispatch) => {
   }
 };
 
-export const markMessageAsRead = (messageIdArray) => async () => {
-  try {
-    await axios.patch("/api/messages/is-read", {messageIdArray});
-  } catch (error) {
-    console.error(error);
-  }
+const sendMarkAsRead = (convoId) => {
+  socket.emit("is-read", { convoId });
 };
+
+export const markMessageAsRead =
+  (messageIdArray, convoId) => async (dispatch) => {
+    try {
+      await axios.patch("/api/messages/is-read", { messageIdArray });
+      sendMarkAsRead(convoId);
+      dispatch(markMessageAsReadAction(convoId));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 export const searchUsers = (searchTerm) => async (dispatch) => {
   try {

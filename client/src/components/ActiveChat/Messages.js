@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
 import { Box } from "@material-ui/core";
-import { SenderBubble, OtherUserBubble } from "../ActiveChat";
+import moment from "moment";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { markMessageAsRead } from "../../store/utils/thunkCreators";
-import moment from "moment";
+import { OtherUserBubble, SenderBubble } from "../ActiveChat";
 
 const Messages = (props) => {
   const { messages, otherUser, userId, markMessageAsRead } = props;
@@ -15,8 +15,11 @@ const Messages = (props) => {
         unreadMessagesArr.push(message.id);
       }
     });
-    markMessageAsRead(unreadMessagesArr);
-  }, [messages]);
+
+    if (unreadMessagesArr.length > 0) {
+      markMessageAsRead(unreadMessagesArr, messages[0].conversationId);
+    }
+  }, [messages, userId, markMessageAsRead]);
 
   const sortedList = messages.sort(
     (messageA, messageB) => messageB.id - messageA.id
@@ -57,8 +60,8 @@ const Messages = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    markMessageAsRead: (messageId) => {
-      dispatch(markMessageAsRead(messageId));
+    markMessageAsRead: (messageId, convoId) => {
+      dispatch(markMessageAsRead(messageId, convoId));
     },
   };
 };
