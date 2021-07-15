@@ -20,7 +20,9 @@ const useStyles = makeStyles(() => ({
   },
   bubble: {
     backgroundImage: "linear-gradient(225deg, #6CC1FF 0%, #3A8DFF 100%)",
-    borderRadius: "0 10px 10px 10px"
+    borderRadius: "0 10px 10px 10px",
+    maxWidth: "150px",
+    wordWrap: "break-word",
   },
   text: {
     fontSize: 14,

@@ -8,16 +8,18 @@ const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
     flexGrow: 8,
-    flexDirection: "column"
+    flexDirection: "column",
   },
   chatContainer: {
-    marginLeft: 41,
-    marginRight: 41,
     display: "flex",
     flexDirection: "column",
     flexGrow: 1,
-    justifyContent: "space-between"
-  }
+    justifyContent: "space-between",
+  },
+  chatWrapper: {
+    overflow: "auto",
+    maxHeight: "500px"
+  },
 }));
 
 const ActiveChat = (props) => {
@@ -34,11 +36,14 @@ const ActiveChat = (props) => {
             online={conversation.otherUser.online || false}
           />
           <Box className={classes.chatContainer}>
-            <Messages
-              messages={conversation.messages}
-              otherUser={conversation.otherUser}
-              userId={user.id}
-            />
+            <Box className={classes.chatWrapper}>
+              <Messages
+                messages={conversation.messages}
+                otherUser={conversation.otherUser}
+                userId={user.id}
+              />
+            </Box>
+
             <Input
               otherUser={conversation.otherUser}
               conversationId={conversation.id}
@@ -57,8 +62,9 @@ const mapStateToProps = (state) => {
     conversation:
       state.conversations &&
       state.conversations.find(
-        (conversation) => conversation.otherUser.username === state.activeConversation
-      )
+        (conversation) =>
+          conversation.otherUser.username === state.activeConversation
+      ),
   };
 };
 

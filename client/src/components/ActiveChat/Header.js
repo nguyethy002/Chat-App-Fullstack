@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     display: "flex",
     alignItems: "center",
-    marginLeft: 24
+    paddingLeft: 24
   },
   username: {
     fontSize: 20,

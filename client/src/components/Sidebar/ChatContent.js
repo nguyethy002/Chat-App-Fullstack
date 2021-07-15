@@ -32,6 +32,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     borderRadius: 10,
   },
+  previewTextContainer:{
+    maxWidth: "150px",
+    overflow: "hidden",
+  }
 }));
 
 const ChatContent = (props) => {
@@ -46,9 +50,11 @@ const ChatContent = (props) => {
         <Typography className={classes.username}>
           {otherUser.username}
         </Typography>
-        <Typography className={classes.previewText}>
-          {latestMessageText}
-        </Typography>
+        <Box className={classes.previewTextContainer}>
+          <Typography className={classes.previewText}>
+            {latestMessageText}
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );
