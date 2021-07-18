@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { User } = require("../../db/models");
 const jwt = require("jsonwebtoken");
+const loginUsers = require("../../loginUsers");
 
 router.post("/register", async (req, res, next) => {
   try {
@@ -68,6 +69,7 @@ router.post("/login", async (req, res, next) => {
         ...user.dataValues,
         token,
       });
+      loginUsers[user.dataValues.id] = true;
     }
   } catch (error) {
     next(error);
