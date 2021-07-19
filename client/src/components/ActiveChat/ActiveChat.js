@@ -12,12 +12,16 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
   },
   chatContainer: {
-    marginLeft: 41,
-    marginRight: 41,
     display: "flex",
     flexDirection: "column",
     flexGrow: 1,
     justifyContent: "space-between",
+  },
+  chatWrapper: {
+    overflow: "auto",
+    maxHeight: "500px",
+    paddingLeft: "10px",
+    paddingRight: "10px",
   },
 }));
 
@@ -35,12 +39,15 @@ const ActiveChat = (props) => {
             online={conversation.otherUser.online || false}
           />
           <Box className={classes.chatContainer}>
-            <Messages
-              messages={conversation.messages}
-              otherUser={conversation.otherUser}
-              userId={user.id}
-              markMessageAsRead ={markMessageAsRead}
-            />
+            <Box className={classes.chatWrapper}>
+              <Messages
+                messages={conversation.messages}
+                otherUser={conversation.otherUser}
+                userId={user.id}
+                markMessageAsRead ={markMessageAsRead}
+              />
+            </Box>
+
             <Input
               otherUser={conversation.otherUser}
               conversationId={conversation.id}

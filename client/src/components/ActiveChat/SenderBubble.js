@@ -28,6 +28,8 @@ const useStyles = makeStyles(() => ({
   seenAvatar: {
     width: "20px",
     height: "20px",
+    maxWidth: "150px",
+    wordWrap: "break-word",
   },
 }));
 
