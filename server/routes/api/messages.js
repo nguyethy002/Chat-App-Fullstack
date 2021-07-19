@@ -61,4 +61,25 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+router.patch("/is-read", async (req, res, next) => {
+  if (!req.user) {
+    return res.sendStatus(401);
+  }
+  try {
+    if (!req.body.messageIdArray) {
+      return res.sendStatus(400);
+    }
+    const messageIdArray = req.body.messageIdArray;
+    for (let i = 0; i < messageIdArray.length; i++) {
+      await Message.update(
+        { isRead: true },
+        { where: { id: messageIdArray[i] } }
+      );
+    }
+    return res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

@@ -1,10 +1,11 @@
 import axios from "axios";
 import socket from "../../socket";
 import {
-  gotConversations,
   addConversation,
+  gotConversations,
   setNewMessage,
   setSearchedUsers,
+  markMessageAsRead as markMessageAsReadAction,
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
 
@@ -108,6 +109,21 @@ export const postMessage = (body) => async (dispatch) => {
     console.error(error);
   }
 };
+
+const sendMarkAsRead = (convoId) => {
+  socket.emit("is-read", { convoId });
+};
+
+export const markMessageAsRead =
+  (messageIdArray, convoId) => async (dispatch) => {
+    try {
+      await axios.patch("/api/messages/is-read", { messageIdArray });
+      sendMarkAsRead(convoId);
+      dispatch(markMessageAsReadAction(convoId));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 export const searchUsers = (searchTerm) => async (dispatch) => {
   try {
