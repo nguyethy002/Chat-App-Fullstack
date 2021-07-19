@@ -5,15 +5,9 @@ import moment from "moment";
 
 const Messages = (props) => {
   const { messages, otherUser, userId } = props;
-  const [messagesState, setMessagesState] = useState([]);
-
-  useEffect(() => {
-    setMessagesState(messages.sort((messA, messB) => messA.id - messB.id));
-  }, [messages]);
-
   return (
     <Box>
-      {messagesState.map((message) => {
+      {messages.map((message) => {
         const time = moment(message.createdAt).format("h:mm");
         return message.senderId === userId ? (
           <SenderBubble key={message.id} text={message.text} time={time} />
